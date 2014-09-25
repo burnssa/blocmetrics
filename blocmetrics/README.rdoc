@@ -1,28 +1,17 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Here is what you need to do in order to track data using the blocmetrics analytics tool.
 
-Things you may want to cover:
+1. Copy the javascript snippets below for tracking 
+	- User sessions
+	- Topic views 
+	- Bookmark clicks
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+blocmetrics.track("Visit start", {visitor_email: "some value", visitor_ip: "some other value"})
+blocmetrics.track("Topic view", {visit_id: "some value", topic_title: "some other value"})
+blocmetrics.track("Bookmark view", {visit_id: "some value", url: "some other value"})
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+
+
+2. Paste it into your 
