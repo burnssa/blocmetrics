@@ -11,9 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924045925) do
+ActiveRecord::Schema.define(version: 20140925054118) do
+
+  create_table "bookmark_views", force: true do |t|
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "visit"
+  end
+
+  add_index "bookmark_views", ["visit"], name: "index_bookmark_views_on_visit"
 
   create_table "events", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "topic_views", force: true do |t|
+    t.string   "topic_title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "visit"
+  end
+
+  add_index "topic_views", ["visit"], name: "index_topic_views_on_visit"
+
+  create_table "visits", force: true do |t|
+    t.string   "email"
+    t.string   "visitor_ip"
+    t.integer  "ended_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
