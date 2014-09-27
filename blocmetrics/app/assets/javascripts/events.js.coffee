@@ -6,11 +6,10 @@ var blocmetrics = (function () {
     var submitted = {};
     _bm_event = {};
 
-    my.track = function(name, arg_1, arg_2, arg_3) {
-            _pm_event.name = name;
-            _pm_event.property_1 = arg_1.property_1;
-            _pm_event.property_2 = arg_2.property_2;
-            _pm_event.property_3 = arg_3.property_3;
+    submitted.track = function(name, arg_1, arg_2, arg_3) {
+            _bm_event.name = name;
+            _bm_event.property_1 = arg_1.property_1;
+            _bm_event.property_2 = arg_2.property_2;
             _send_data();
     };
 
