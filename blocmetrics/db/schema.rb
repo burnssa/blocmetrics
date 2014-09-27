@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925054118) do
+ActiveRecord::Schema.define(version: 20140927221446) do
 
   create_table "bookmark_views", force: true do |t|
     t.string   "url"
@@ -35,6 +35,13 @@ ActiveRecord::Schema.define(version: 20140925054118) do
   end
 
   add_index "topic_views", ["visit"], name: "index_topic_views_on_visit"
+
+  create_table "tracked_apps", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.text     "desc"
+  end
 
   create_table "visits", force: true do |t|
     t.string   "email"

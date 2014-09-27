@@ -2,45 +2,46 @@ class EventsController < ApplicationController
 	before_filter :set_headers
 	skip_before_filter :verify_authenticity_token, only: [:create]
 
+  before_filter :cors_set_headers
+  after_filter :cors_set_access_control_headers
 
+  respond_to :json
+
+  # POST /events
+  # POST /events.json
   def create
-  	puts "TRACKED PARAMS HERE: #{params}"
+    #binding.pry
 
-  	visitor_email = params['visitor_email'] # String
-  	visitor_ip = params['visitor_ip'] #IP Address
-  	topic_view = params['topic_view'] #count
-  	bookmark_view = parms['bookmark_view'] #count
-  	visit_end = params['visit_end'] || [] #time
+    puts params
+    puts 'Info received'
 
-		puts "#{visitor}"
-		puts "there was a new page view" if uniq_view?
-		puts "there was a topic view" if topic_view? 
-		puts "there was a new bookmark view" if bookmark_view?
+    @tracked_app = TrackedApp.find(event_params[:tracked_app_id])
+    @event = @tracked_app.events.build(event_params)
+    @event.ip_address = request.env["REMOTE_HOST"]
+    respond_to do |format|
+      if @event.save
+        format.html { redirect_to @tracked_app, notice: 'Event was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @tracked_app }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
-  #create events within a single 'visit', when a registered user logs in
-  #visit will have 
-  	# - unique IP address, 
-  	# - email address
-  	# - referer
-  	# - topic_views
-  	# - bookmark_views
-
-  visit = Visit.create!(email: visitor_email, ip: visitor_ip, visit_start: created_at)
-
- 	
-  visit_end = 
-
- 
 
 
   private
 
   def set_headers
-  	Access-Control-Allow-Origin: *
-		Access-Control-Allow-Methods: POST, GET, OPTIONS
-		Access-Control-Allow-Headers: Content-Type
-		Access-Control-Max-Age: 1728000
+  	headers['Access-Control-Allow-Origin']: '*'
+		headers['Access-Control-Allow-Methods']: 'POST, GET, OPTIONS'
+		headers['Access-Control-Allow-Headers']: 'Content-Type'
+		headers['Access-Control-Max-Age']: '1728000'
   end
+
+  def event_params
+      params.require(:event).permit(:name, :arg_1, :arg_2, :arg_3)
+    end
 
 end
