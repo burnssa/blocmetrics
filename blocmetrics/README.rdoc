@@ -7,7 +7,7 @@ Here is what you need to do in order to track data using the blocmetrics analyti
 	- Topic views 
 	- Bookmark clicks
 
-blocmetrics.track("Visit start", {visitor_email: "some value", visitor_ip: "some other value"})
+blocmetrics.track("Visit start", {visitor_email: "some value", visitor_ip: "some other value", referer: "referer"})
 blocmetrics.track("Topic view", {visit_id: "some value", topic_title: "some other value"})
 blocmetrics.track("Bookmark view", {visit_id: "some value", url: "some other value"})
 
