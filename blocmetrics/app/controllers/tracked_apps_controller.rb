@@ -20,7 +20,7 @@ class TrackedAppsController < ApplicationController
     if @TrackedApp.save
       redirect_to app_path(@tracked_app), notice: "App was added successfully." and return
     else
-      flash[:error] = "Error adding TrackedApp. Please try again."
+      flash[:error] = "Error adding your app. Please try again."
       render :new and return
 	  end 
 	end

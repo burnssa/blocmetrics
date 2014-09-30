@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140927221446) do
+ActiveRecord::Schema.define(version: 20140930041743) do
 
   create_table "bookmark_views", force: true do |t|
     t.string   "url"
@@ -23,32 +23,20 @@ ActiveRecord::Schema.define(version: 20140927221446) do
   add_index "bookmark_views", ["visit"], name: "index_bookmark_views_on_visit"
 
   create_table "events", force: true do |t|
+    t.string   "name"
+    t.string   "location"
+    t.string   "property_1"
+    t.string   "property_2"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ip_address"
   end
-
-  create_table "topic_views", force: true do |t|
-    t.string   "topic_title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "visit"
-  end
-
-  add_index "topic_views", ["visit"], name: "index_topic_views_on_visit"
 
   create_table "tracked_apps", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
     t.text     "desc"
-  end
-
-  create_table "visits", force: true do |t|
-    t.string   "email"
-    t.string   "visitor_ip"
-    t.integer  "ended_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end

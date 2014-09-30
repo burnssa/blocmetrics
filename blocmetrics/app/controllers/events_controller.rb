@@ -2,8 +2,7 @@ class EventsController < ApplicationController
 	before_filter :set_headers
 	skip_before_filter :verify_authenticity_token, only: [:create]
 
-  before_filter :cors_set_headers
-  after_filter :cors_set_access_control_headers
+  before_filter :set_headers
 
   respond_to :json
 
@@ -15,8 +14,7 @@ class EventsController < ApplicationController
     puts params
     puts 'Info received'
 
-    @tracked_app = TrackedApp.find(event_params[:tracked_app_id])
-    @event = @tracked_app.events.build(event_params)
+    @event = Event.new(event_params)
     @event.ip_address = request.env["REMOTE_HOST"]
     respond_to do |format|
       if @event.save
@@ -29,19 +27,27 @@ class EventsController < ApplicationController
     end
   end
 
+  def index
+    @events = Event.all
+    #@events_type = @events.where(type: "click")
+  end
 
+  def show
+    @event = Event.find(params[:id])
+    @location = @event.location
+  end
 
   private
 
   def set_headers
-  	headers['Access-Control-Allow-Origin']: '*'
-		headers['Access-Control-Allow-Methods']: 'POST, GET, OPTIONS'
-		headers['Access-Control-Allow-Headers']: 'Content-Type'
-		headers['Access-Control-Max-Age']: '1728000'
+  	headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+		headers['Access-Control-Allow-Headers'] = 'Content-Type'
+		headers['Access-Control-Max-Age'] = '1728000'
   end
 
   def event_params
-    params.require(:event).permit(:name, :arg_1, :arg_2, :arg_3)
+    params.require(:event).permit(:name, :location, :ip_address)
   end
 
 end

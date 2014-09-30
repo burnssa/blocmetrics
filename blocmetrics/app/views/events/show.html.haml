@@ -1,0 +1,12 @@
+%p#notice= notice
+%p
+	%strong Web property:
+	= @event.location
+%p
+	%strong Ip address:
+	= @event.ip_address
+%p
+	%strong Location:
+	= @event.location
+%o
+	= link_to 'Back', events_path

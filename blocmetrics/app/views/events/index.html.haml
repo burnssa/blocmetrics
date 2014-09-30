@@ -1,2 +1,11 @@
 %h1 Events#index
-%p Find me in app/views/events/index.html.haml
+%p 
+	= @events.count
+%p 
+	= @events.each do |a|
+		.row
+			#{a.name}
+		.row
+			#{a.location}
+		.row
+			#{a.ip_address}
