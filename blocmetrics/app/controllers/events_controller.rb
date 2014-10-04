@@ -9,17 +9,13 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    #binding.pry
-
-    puts params
-    puts 'Info received'
 
     @event = Event.new(event_params)
     @event.ip_address = request.env["REMOTE_HOST"]
     respond_to do |format|
       if @event.save
-        format.html { redirect_to @tracked_app, notice: 'Event was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @tracked_app }
+        format.html { redirect_to @event, notice: 'Event was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @event }
       else
         format.html { render action: 'new' }
         format.json { render json: @event.errors, status: :unprocessable_entity }
