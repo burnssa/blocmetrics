@@ -4,7 +4,7 @@
 %p 
 	= @events.each do |a|
 		.row
-			#{a.name}
+			= link_to a.name, event_path(a)
 		.row
 			#{a.location}
 		.row
