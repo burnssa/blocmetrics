@@ -2,6 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
+
+# Generic example chart.js graph
 jQuery ->
   data = {
     labels : ["January","February","March","April","May","June","July"],

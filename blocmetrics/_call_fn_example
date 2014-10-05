@@ -2,7 +2,7 @@ var blocmetrics = (function () {
     var submitted = {};
     _bm_event = {};
 
-    submitted.track = function(name, arg_1, arg_2, arg_3) {
+    submitted.track = function(name, arg_1, arg_2) {
             _bm_event.name = name;
             _bm_event.property_1 = arg_1.property_1;
             _bm_event.property_2 = arg_2.property_2;
