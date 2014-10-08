@@ -26,4 +26,4 @@ jQuery ->
     ]
   }
 
-  myNewChart = new Chart($("#canvas").get(0).getContext("2d")).Line(data)
+  # myNewChart = new Chart($("#canvas").get(0)).Line(data)
