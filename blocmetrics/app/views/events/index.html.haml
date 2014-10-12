@@ -1,65 +1,45 @@
+
+
 !!!
 %html
   %head
     %meta{:charset => "utf-8"}/
     :css
-      .chart div {
-        font: 10px sans-serif;
-        background-color: steelblue;
-        text-align: right;
-        padding: 3px;
-        margin: 1px;
-        color: white;
+      div.bar {
+        display: inline-block;
+        width: 20px;
+        height: 75px;   /* We'll override this later */
+        background-color: teal;
       }
-      .chart rect {
-        fill: steelblue;
-      }
+
   %body
 
     %h1 Events#index
-    %p #{@visits}
+    / %p #{@visits}
+    / %p #{@ips}
 
-    %p #{@events.count}
-    %p #{@clicks.count}
+
+    / %p #{@events.count}
+    / %p #{@clicks.count}
 
     %svg.chart
     
-    %script{:src => "assets/javascripts/d3.v3.js"}
+    %script{:charset => "utf-8", :src => "http://d3js.org/d3.v3.min.js"}
     :javascript
-      var data = #{ raw @visits.to_json };
+      var dataset = #{ raw @visits.to_json };
       var width = 960,
         height = 500;
 
-      var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1);
 
-      var y = d3.scale.linear()
-        .rangeRound([height, 0]);
+      d3.select("body").selectAll("div")
+          .data(dataset)
+          .enter()
+          .append("div")
+          .attr("class", "bar")
+          .style("height", function(d) {
+            var barHeight = d * 3;
+            return barHeight + "px"; 
+          });
       
-      // Our color bands
-      var color = d3.scale.ordinal()
-          .range(["#308fef", "#5fa9f3", "#1176db"]);
-
-      // Use our X scale to set a bottom axis
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom");
-
-      // Same for our left axis
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left")
-          .tickFormat(d3.format(".2s"));
-
-      d3.select(".chart")
-        .selectAll("div")
-          .data(data)
-        .enter().append("div")
-          .style("height", function(d) { return y(d) + "py"; })
-          .text(function(d) { return d; });
-
-      var barWidth = width / data.length;
-
-
 
 / %canvas#canvas{:height => "100", :width => "200"}

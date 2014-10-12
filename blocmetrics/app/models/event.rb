@@ -1,9 +1,12 @@
 class Event < ActiveRecord::Base
 	belongs_to :tracked_app	
 
-	def self.visits
+	def self.ips
 		ips = Event.all.collect { |a| a.ip_address }.uniq
+		ips
+	end
 
+	def self.visits
 		visits = []
 
 		ips.each_with_index do |v, i|
