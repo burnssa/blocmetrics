@@ -1,45 +1,65 @@
-
-
 !!!
 %html
   %head
     %meta{:charset => "utf-8"}/
     :css
       div.bar {
-        display: inline-block;
-        width: 20px;
-        height: 75px;   /* We'll override this later */
-        background-color: teal;
+    
       }
 
   %body
 
     %h1 Events#index
-    / %p #{@visits}
+    %p #{@visits}
     / %p #{@ips}
+    / %p #{@emails}
+    / %p #{@emails}
 
 
     / %p #{@events.count}
     / %p #{@clicks.count}
 
-    %svg.chart
+    / %svg.chart
     
     %script{:charset => "utf-8", :src => "http://d3js.org/d3.v3.min.js"}
     :javascript
       var dataset = #{ raw @visits.to_json };
-      var width = 960,
-        height = 500;
+      var datalabels = #{ raw @ips.to_json };
+      var w = 800; 
+      var h = 100; 
+      barPadding = 1;
 
+      var axisScale = d3.scale.linear()
+                            .domain([0, w])
+                            .range([0, h]);
 
-      d3.select("body").selectAll("div")
+      var svg = d3.select("body")
+                  .append("svg")
+                  .attr("width", w)
+                  .attr("height", h);
+
+      var xAxis = d3.svg.axis().scale(axisScale);
+
+      svg.selectAll("rect")
           .data(dataset)
           .enter()
-          .append("div")
-          .attr("class", "bar")
-          .style("height", function(d) {
-            var barHeight = d * 3;
-            return barHeight + "px"; 
-          });
+          .append("rect")
+          .attr("x", function(d, i) {
+              return i * (w / dataset.length); 
+          })
+          .attr("y", function(d) {
+            return h - 5 * d;
+          })
+          .attr("width", w / dataset.length - barPadding)
+          .attr("height", function(d) {
+              return 5 * d;
+          })
+          .attr("fill", "green");
       
-
-/ %canvas#canvas{:height => "100", :width => "200"}
+      svg.append("text")
+        .data(datalabels)
+        .enter()
+        .append("text")
+        .text(function(d) {
+            return d;
+        });

@@ -6,6 +6,11 @@ class Event < ActiveRecord::Base
 		ips
 	end
 
+	def self.emails
+		emails = Event.all.collect { |a| a.property_2 }.uniq
+		emails
+	end
+
 	def self.visits
 		visits = []
 
@@ -15,4 +20,7 @@ class Event < ActiveRecord::Base
 		visits
 		# visit_count = ips.zip(visits)
 	end
+
+
+
 end

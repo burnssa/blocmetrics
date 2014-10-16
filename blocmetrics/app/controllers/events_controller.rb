@@ -25,6 +25,7 @@ class EventsController < ApplicationController
     @visits = Event.visits
     @ips = Event.ips
     @clicks = Event.where(name: 'click')
+    @emails = Event.emails
     #@events_type = @events.where(type: "click")
   end
 
