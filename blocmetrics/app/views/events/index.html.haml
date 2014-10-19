@@ -11,6 +11,7 @@
 
     %h1 Events#index
     %p #{@visits}
+    %p #{@ips}
     / %p #{@ips}
     / %p #{@emails}
     / %p #{@emails}
@@ -23,22 +24,24 @@
     
     %script{:charset => "utf-8", :src => "http://d3js.org/d3.v3.min.js"}
     :javascript
+      var margin = {top: 20, right: 20, bottom: 30, left: 40}; 
       var dataset = #{ raw @visits.to_json };
       var datalabels = #{ raw @ips.to_json };
       var w = 800; 
       var h = 100; 
       barPadding = 1;
 
-      var axisScale = d3.scale.linear()
-                            .domain([0, w])
-                            .range([0, h]);
-
       var svg = d3.select("body")
                   .append("svg")
                   .attr("width", w)
                   .attr("height", h);
 
-      var xAxis = d3.svg.axis().scale(axisScale);
+      var xScale = d3.scale.ordinal()
+          .domain(datalabels)
+          .rangeRoundBands([margin.left, w], 0.05);
+
+      var xAxis = d3.svg.axis().scale(xScale)
+          .orient("bottom");
 
       svg.selectAll("rect")
           .data(dataset)
@@ -55,11 +58,12 @@
               return 5 * d;
           })
           .attr("fill", "green");
-      
+
       svg.append("text")
-        .data(datalabels)
-        .enter()
-        .append("text")
-        .text(function(d) {
-            return d;
-        });
+        .attr("x", 265 )
+        .style("text-anchor", "middle")
+        .text("Visitor IP Address");
+
+       svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis);
