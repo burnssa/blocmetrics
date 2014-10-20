@@ -1,4 +1,4 @@
-require 'json'
+- require 'json'
 
 !!!
 %html
@@ -20,7 +20,7 @@ require 'json'
     / %p #{@clicks.count}
 
     / %svg.chart
-    
+
     %script{:charset => "utf-8", :src => "http://d3js.org/d3.v3.min.js"}
     :javascript
       var margin = {top: 20, right: 20, bottom: 30, left: 40}; 
@@ -87,20 +87,27 @@ require 'json'
           .style("text-anchor", "end")
           .text("Visits");
 
-
+    %hr
     %p Visitor email addresses by frequency:
     %br
     %p #{@email_visits}
     %p #{@emails}
 
+:css
+  body {
+    font: 12px sans-serif;
+  }
+  
+  .arc path {
+    stroke: #fff;
+  }
+
 %script{:src => "http://d3js.org/d3.v3.min.js"}
 :javascript
     var width = 960,
       height = 500,
-      radius = Math.min(width, height) / 2;
-    var email_visits = #{ raw @email_visits.to_json };
-    var emails = #{ raw @emails.to_json };
-    var email_count = #{ raw @email_count.to_json };
+      radius = Math.min(width, height) / 2,
+      data = #{ raw @email_count.to_json };
   
     var color = d3.scale.ordinal()
         .range(["#98abc5", "#8a89a6", "#7b6888"]);
@@ -110,8 +117,7 @@ require 'json'
         .innerRadius(0);
   
     var pie = d3.layout.pie()
-        .sort(null)
-        .value(function(d) { return d.values; });
+        .value(function(d) { return d.value; });
   
     var svg = d3.select("body").append("svg")
         .attr("width", width)
@@ -120,12 +126,16 @@ require 'json'
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
   
     var g = svg.selectAll(".arc")
-        .data(pie(email_count))
+        .data(pie(data))
       .enter().append("g")
         .attr("class", "arc");
+
+    g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.key); });
   
     g.append("text")
         .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .style("text-anchor", "middle")
-        .text(function(d) { return d.keys; });
+        .text(function(d, i) { return data[i].key; });
