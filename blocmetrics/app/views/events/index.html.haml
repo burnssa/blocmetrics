@@ -1,3 +1,5 @@
+require 'json'
+
 !!!
 %html
   %head
@@ -9,14 +11,11 @@
 
   %body
 
-    %h1 Events#index
-    %p #{@visits}
-    %p #{@ips}
-    / %p #{@ips}
-    / %p #{@emails}
-    / %p #{@emails}
-
-
+    %h1 Your app's visit data
+    %hr
+    %p Visitor ip address by frequency:
+    %br
+  
     / %p #{@events.count}
     / %p #{@clicks.count}
 
@@ -27,43 +26,106 @@
       var margin = {top: 20, right: 20, bottom: 30, left: 40}; 
       var dataset = #{ raw @visits.to_json };
       var datalabels = #{ raw @ips.to_json };
-      var w = 800; 
-      var h = 100; 
+      var w = 800 - margin.left - margin.right; 
+      var h = 200 - margin.top - margin.bottom; 
       barPadding = 1;
 
-      var svg = d3.select("body")
-                  .append("svg")
-                  .attr("width", w)
-                  .attr("height", h);
-
-      var xScale = d3.scale.ordinal()
+      var x = d3.scale.ordinal()
           .domain(datalabels)
-          .rangeRoundBands([margin.left, w], 0.05);
+          .rangeRoundBands([margin.left, w + margin.left + margin.right], 0.01);
 
-      var xAxis = d3.svg.axis().scale(xScale)
+      var y = d3.scale.linear().range([h, 0]);
+
+      var xAxis = d3.svg.axis().scale(x)
           .orient("bottom");
 
-      svg.selectAll("rect")
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .tickPadding(10)
+          .orient("left")
+          .ticks(5);
+
+      var svg = d3.select("body")
+          .append("svg")
+          .attr("width", w + margin.left + margin.right)
+          .attr("height", h + margin.top + margin.bottom)   
+
+      svg.selectAll("bar")
           .data(dataset)
-          .enter()
+        .enter()
           .append("rect")
           .attr("x", function(d, i) {
-              return i * (w / dataset.length); 
+              return margin.left + i * ((w + margin.right) / dataset.length); 
           })
           .attr("y", function(d) {
             return h - 5 * d;
           })
-          .attr("width", w / dataset.length - barPadding)
+          .attr("width", ((w + margin.right) / dataset.length))
           .attr("height", function(d) {
               return 5 * d;
           })
           .attr("fill", "green");
 
       svg.append("text")
-        .attr("x", 265 )
-        .style("text-anchor", "middle")
-        .text("Visitor IP Address");
+          .text("Visitor IP Address")
+          .attr("x", (w - margin.left) / 2)
+          .attr("y", h + margin.bottom);
 
-       svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis);
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + h + ")")
+          .call(xAxis);
+
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+        
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 5)
+          .attr("dy", "1em")
+          .style("text-anchor", "end")
+          .text("Visits");
+
+
+    %p Visitor email addresses by frequency:
+    %br
+    %p #{@email_visits}
+    %p #{@emails}
+
+%script{:src => "http://d3js.org/d3.v3.min.js"}
+:javascript
+    var width = 960,
+      height = 500,
+      radius = Math.min(width, height) / 2;
+    var email_visits = #{ raw @email_visits.to_json };
+    var emails = #{ raw @emails.to_json };
+    var email_count = #{ raw @email_count.to_json };
+  
+    var color = d3.scale.ordinal()
+        .range(["#98abc5", "#8a89a6", "#7b6888"]);
+  
+    var arc = d3.svg.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(0);
+  
+    var pie = d3.layout.pie()
+        .sort(null)
+        .value(function(d) { return d.values; });
+  
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+      .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  
+    var g = svg.selectAll(".arc")
+        .data(pie(email_count))
+      .enter().append("g")
+        .attr("class", "arc");
+  
+    g.append("text")
+        .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .text(function(d) { return d.keys; });

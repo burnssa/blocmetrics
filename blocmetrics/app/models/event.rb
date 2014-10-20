@@ -3,33 +3,44 @@ class Event < ActiveRecord::Base
 
 	def self.ips
 		ips = Event.all.collect do |a| 
-			if a.ip_address.nil?
-				0
-			else
-				a.ip_address
-			end
+			a.ip_address.nil? ? 0 : a.ip_address
 		end.uniq
 	end
 
 	def self.emails
-		emails = Event.all.collect { |a| a.property_2 }.uniq
+		emails = Event.all.collect do |e| 
+			e.property_2.nil? ? 0 : e.property_2.to_s
+		end.uniq
+	end
+
+	def self.email_visits
+		email_visits = []
+		emails.each_with_index do |v, i|
+			emails[i] == 0 ? email_visits << Event.where(property_2: nil).count : email_visits << Event.where(property_2: emails[i]).count
+		end
+		email_visits		
+	end
+
+	def self.email_count
+		email_hash_array = []
+		email_array = self.emails.zip(self.email_visits)
+		email_array.each do |i|
+			email_hash_array << { key: "#{i[0]}", value: "#{i[1]}" }
+		end
+		email_hash_array
 	end
 
 	def self.visits
 		visits = []
 
 		ips.each_with_index do |v, i|
-			if ips[i] == 0
-				visits << Event.where(ip_address: nil).count
-			else 
-				visits << Event.where(ip_address: ips[i]).count
-			end
+			ips[i] == 0 ? visits << Event.where(ip_address: nil).count : visits << Event.where(ip_address: ips[i]).count
 		end
 		visits	
 	end
 
 	def self.visit_count
-		visit_count = ips.zip(visits)
+		visit_count = ips.zip(visits).to_h
 	end
 
 end

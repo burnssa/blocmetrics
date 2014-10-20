@@ -23,7 +23,10 @@ class EventsController < ApplicationController
   def index
     @events = Event.all
     @visits = Event.visits
+    @visit_count = Event.visit_count
+    @email_visits = Event.email_visits
     @ips = Event.ips
+    @email_count = Event.email_count
     @clicks = Event.where(name: 'click')
     @emails = Event.emails
     #@events_type = @events.where(type: "click")
