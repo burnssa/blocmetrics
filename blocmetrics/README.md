@@ -3,7 +3,7 @@
 Here is what you need to do in order to track data using the blocmetrics analytics tool for tracking page views and clicks on specific links within your application.
 
 
-  1.  Copy the javascript snippets below to the application.js file in the application for whose events you'd like to track. 
+_1.  Copy the javascript snippets below to the application.js file in the application for whose events you'd like to track. 
 
 ```
 var blocmetrics = function(name, location, property_1, property_2){
@@ -26,7 +26,7 @@ var blocmetrics = function(name, location, property_1, property_2){
 }
 ```
 
-  2. Insert the following snippet into the view for the page on which you'd like to track events. Note that the following is in haml. If you need to convert the snippet to erb, you can use the website https://haml2erb.org/ to do so. Ensure that you include it at the bottom of your %body section in the view.
+_2. Insert the following snippet into the view for the page on which you'd like to track events. Note that the following is in haml. If you need to convert the snippet to erb, you can use the website https://haml2erb.org/ to do so. Ensure that you include it at the bottom of your %body section in the view.
 
 ```
 :javascript
@@ -43,7 +43,7 @@ var blocmetrics = function(name, location, property_1, property_2){
 	})
 ```
 
-  3. To track clicks of a given link, with the following features
+_3. To track clicks of a given link, with the following features
 
 ```
 #{link_to("See more", topic_path(topic))}
@@ -57,4 +57,4 @@ update the link_to arguments so that the link looks as such:
 
 You can add and track custom features (such as user email address or referring page) by updating property 1 and property 2 accordingly.
 
-  4. Check out the event graphs in the root of your blocmetrics application. There you'll see a frequency graph for visitors' ip addresses and a pie chart showing relative frequency of link clicks for users with the unique property you define in 'property 1'.
+_4. Check out the event graphs in the root of your blocmetrics application. There you'll see a frequency graph for visitors' ip addresses and a pie chart showing relative frequency of link clicks for users with the unique property you define in 'property 1'.
