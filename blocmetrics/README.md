@@ -43,7 +43,7 @@ var blocmetrics = function(name, location, property_1, property_2){
 	})
 ```
 
-_3. To track clicks of a given link, with the following features
+*3. To track clicks of a given link, with the following features
 
 ```
 #{link_to("See more", topic_path(topic))}
@@ -57,4 +57,4 @@ update the link_to arguments so that the link looks as such:
 
 You can add and track custom features (such as user email address or referring page) by updating property 1 and property 2 accordingly.
 
-_4. Check out the event graphs in the root of your blocmetrics application. There you'll see a frequency graph for visitors' ip addresses and a pie chart showing relative frequency of link clicks for users with the unique property you define in 'property 1'.
+*4. Check out the event graphs in the root of your blocmetrics application. There you'll see a frequency graph for visitors' ip addresses and a pie chart showing relative frequency of link clicks for users with the unique property you define in 'property 1'.
