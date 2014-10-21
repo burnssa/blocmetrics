@@ -28,7 +28,7 @@ var blocmetrics = function(name, location, property_1, property_2){
 
 2. Insert the following snippet into the view for the page on which you'd like to track events. Note that the following is in haml. If you need to convert the snippet to erb, you can use the website https://haml2erb.org/ to do so. Ensure that you include it at the bottom of your %body section in the view.
 
-``
+```
 :javascript
 	$(document).ready(function(){
 		//declare variables for event properties you'd like to track here
@@ -41,7 +41,7 @@ var blocmetrics = function(name, location, property_1, property_2){
 			}
 		)
 	})
-``
+```
 
 3. To track clicks of a given link, with the following features
 
