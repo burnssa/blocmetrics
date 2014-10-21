@@ -1,4 +1,4 @@
-== README
+**README**
 
 Here is what you need to do in order to track data using the blocmetrics analytics tool for tracking page views and clicks on specific links within your application.
 
