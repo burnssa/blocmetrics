@@ -5,7 +5,7 @@ Here is what you need to do in order to track data using the blocmetrics analyti
 
 1. Copy the javascript snippets below to the application.js file in the application for whose events you'd like to track. 
 
-``
+```
 var blocmetrics = function(name, location, property_1, property_2){
   var _bm_event = {
     name: 'event label',
@@ -24,7 +24,7 @@ var blocmetrics = function(name, location, property_1, property_2){
     data: {event: _bm_event}
   })
 }
-``
+```
 
 2. Insert the following snippet into the view for the page on which you'd like to track events. Note that the following is in haml. If you need to convert the snippet to erb, you can use the website https://haml2erb.org/ to do so. Ensure that you include it at the bottom of your %body section in the view.
 
