@@ -131,8 +131,8 @@
         .attr("class", "arc");
 
     g.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.key); });
+        .attr("d", arc)
+        .style("fill", function(d) { return color(d.data.key); });
   
     g.append("text")
         .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
